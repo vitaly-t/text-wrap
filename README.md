@@ -6,6 +6,11 @@ Fast and efficient way to wrap your text with header and footer.
 [![Build Status](https://travis-ci.org/vitaly-t/text-wrap.svg?branch=master)](https://travis-ci.org/vitaly-t/text-wrap)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/text-wrap/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/text-wrap?branch=master)
 
+Reasons for using it:
+
+* Separate initialization for header + footer is necessary for fast file processing.
+* Automatic verification for header + footer presence to avoid their duplication.
+
 ## Installing
 
 ```
