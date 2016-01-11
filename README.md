@@ -41,4 +41,4 @@ UNDER DEVELOPMENT
 Copyright © 2016 [Vitaly Tomilov](https://github.com/vitaly-t);
 Released under the MIT license.
 
-[decomment]:https://github.com/vitaly-t/decomment
+[text-wrap]:https://github.com/vitaly-t/text-wrap
