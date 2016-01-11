@@ -1,0 +1,39 @@
+{
+  "name": "text-wrap",
+  "version": "0.0.1",
+  "description": "Fast and efficient way to wrap your text with header and footer.",
+  "scripts": {
+    "test": "jasmine-node test",
+    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "travis": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coveralls": "2.x",
+    "istanbul": "0.4",
+    "jasmine-node": "1.x"
+  },
+  "homepage": "https://github.com/vitaly-t/text-wrap",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vitaly-t/text-wrap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vitaly-t/text-wrap/issues",
+    "email": "vitaly.tomilov@gmail.com"
+  },
+  "keywords": [
+    "wrap text",
+    "add header",
+    "add footer"
+  ],
+  "author": {
+    "name": "Vitaly Tomilov",
+    "email": "vitaly.tomilov@gmail.com"
+  },
+  "license": "MIT"
+}
