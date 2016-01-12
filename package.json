@@ -1,6 +1,6 @@
 {
   "name": "text-wrap",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Fast and efficient way to wrap your text with header and footer.",
   "scripts": {
     "test": "jasmine-node test",

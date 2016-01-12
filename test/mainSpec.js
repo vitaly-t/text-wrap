@@ -1,62 +1,44 @@
 'use strict';
 
-var decomment = require('../');
-var util = require('gulp-util');
-var stream = require('stream');
+var wrap = require('../');
 
 ////////////////////////
 // Positive tests;
 describe("Positive:", function () {
-    it('should decomment', function (done) {
-        var fakeFile = getBuffer('/*! special */ js code /* normal */');
-        var stream = decomment();
-        stream.once('data', function (newFile) {
-            var data = newFile.contents;
-            expect(data).toBeTruthy();
-            expect(data.toString()).toBe(" js code ");
-        });
-        stream.once('end', done);
-        stream.write(fakeFile);
-        stream.end();
+
+    beforeEach(function () {
+        wrap.clear();
     });
 
-    it('should decomment safely', function (done) {
-        var fakeFile = getBuffer('/*! special */ js code /* normal */');
-        var stream = decomment({safe: true});
-        stream.once('data', function (newFile) {
-            var data = newFile.contents;
-            expect(data).toBeTruthy();
-            expect(data.toString()).toBe("/*! special */ js code ");
+    describe("with empty header and footer", function () {
+        it("must return the text itself", function () {
+            expect(wrap("")).toBe("");
+            expect(wrap("a")).toBe("a");
+            expect(wrap("abc")).toBe("abc");
         });
-        stream.once('end', done);
-        stream.write(fakeFile);
-        stream.end();
     });
 
-    it('should decomment text', function (done) {
-        var fakeFile = getBuffer('cssClass{color:Red;}// comments');
-        var stream = decomment.text();
-        stream.once('data', function (newFile) {
-            var data = newFile.contents;
-            expect(data).toBeTruthy();
-            expect(data.toString()).toBe("cssClass{color:Red;}");
+    describe("with a header and a footer", function () {
+        it("must return text wrapped up", function () {
+            wrap.header = "h";
+            wrap.footer = "f";
+            expect(wrap("")).toBe("hf");
+            expect(wrap("-")).toBe("h-f");
         });
-        stream.once('end', done);
-        stream.write(fakeFile);
-        stream.end();
     });
 
-    it('should decomment html', function (done) {
-        var fakeFile = getBuffer('\<html><body><!-- comment --><div>test</div><!-- comment --></body></html>');
-        var stream = decomment.html();
-        stream.once('data', function (newFile) {
-            var data = newFile.contents;
-            expect(data).toBeTruthy();
-            expect(data.toString()).toBe("\<html><body><div>test</div></body></html>");
+    describe("with a duplicate header", function () {
+        it("must skip the header", function () {
+            wrap.header = "h";
+            expect(wrap("h")).toBe("h");
         });
-        stream.once('end', done);
-        stream.write(fakeFile);
-        stream.end();
+    });
+
+    describe("with a duplicate footer", function () {
+        it("must skip the footer", function () {
+            wrap.footer = "f";
+            expect(wrap("f")).toBe("f");
+        });
     });
 
 });
@@ -64,53 +46,33 @@ describe("Positive:", function () {
 ////////////////////////
 // Negative tests;
 describe("Negative:", function () {
-    describe("with null buffer", function () {
-        it('must return null data', function (done) {
-            var fakeFile = getNull();
-            var stream = decomment();
-            stream.once('data', function (newFile) {
-                expect(newFile.contents).toBeNull();
-            });
-            stream.once('end', done);
-            stream.write(fakeFile);
-            stream.end();
+
+    beforeEach(function () {
+        wrap.clear();
+    });
+
+    describe("passing in a non-text", function () {
+        it("must throw an error", function () {
+            expect(function () {
+                wrap();
+            }).toThrow("Invalid text input.");
         });
     });
 
-    describe("with a stream", function () {
-        var err;
-        it('must throw an error', function (done) {
-            try {
-                var fakeFile = getStream();
-                var stream = decomment();
-                stream.write(fakeFile); // this will throw an error;
-            } catch (e) {
-                err = e;
-                done();
-            }
-            expect(err instanceof util.PluginError);
-            expect(err.message).toBe("Streaming not supported.");
+    describe("setting a non-string header", function () {
+        it("must throw an error", function () {
+            expect(function () {
+                wrap.header = 123;
+            }).toThrow("Invalid header content.");
         });
     });
+
+    describe("setting a non-string footer", function () {
+        it("must throw an error", function () {
+            expect(function () {
+                wrap.footer = 123;
+            }).toThrow("Invalid footer content.");
+        });
+    });
+
 });
-
-function getFakeDest(content) {
-    return new util.File({
-        path: './test/fixture/test.js',
-        cwd: './test/',
-        base: './test/fixture/',
-        contents: content
-    });
-}
-
-function getBuffer(bufferContent) {
-    return getFakeDest(new Buffer(bufferContent));
-}
-
-function getNull() {
-    return getFakeDest(null);
-}
-
-function getStream() {
-    return getFakeDest(stream.PassThrough());
-}
