@@ -7,7 +7,9 @@ function TextWrap(text, options) {
         return twShared.wrap(text, options);
     }
 
-    var header = '', footer = '';
+    var header = '', footer = '',
+        skip = options && options.skipCheck,
+        unique = options && options.unique;
 
     this.wrap = function (text, options) {
 
@@ -15,7 +17,7 @@ function TextWrap(text, options) {
             throw new TypeError("Invalid text input.");
         }
 
-        if (options && options.skipCheck) {
+        if (skip) {
             return header + text + footer;
         }
 
@@ -27,8 +29,12 @@ function TextWrap(text, options) {
             if (headerIdx < 0) {
                 result = header + text;
             } else {
-                while (--headerIdx >= 0 && isGap(text[headerIdx]));
-                result = headerIdx < 0 ? text : header + text;
+                if (unique) {
+                    result = text;
+                } else {
+                    while (--headerIdx >= 0 && isGap(text[headerIdx]));
+                    result = headerIdx < 0 ? text : header + text;
+                }
             }
         } else {
             result = header + text;
@@ -40,10 +46,12 @@ function TextWrap(text, options) {
             if (footerIdx < 0) {
                 result += footer;
             } else {
-                footerIdx += tf.length;
-                while (footerIdx < text.length && isGap(text[footerIdx++]));
-                if (footerIdx < text.length) {
-                    result += footer;
+                if (!unique) {
+                    footerIdx += tf.length;
+                    while (footerIdx < text.length && isGap(text[footerIdx++]));
+                    if (footerIdx < text.length) {
+                        result += footer;
+                    }
                 }
             }
         } else {
