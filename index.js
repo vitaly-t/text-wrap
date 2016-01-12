@@ -1,15 +1,12 @@
 'use strict';
 
-function TextWrap(text, options) {
+function TextWrap(txt, opt) {
 
     if (!(this instanceof TextWrap)) {
-        // called as a function;
-        return twShared.wrap(text, options);
+        return twGlobal.wrap(txt, opt);
     }
 
-    var header = '', footer = '',
-        skip = options && options.skipCheck,
-        unique = options && options.unique;
+    var header = '', footer = '';
 
     this.wrap = function (text, options) {
 
@@ -17,13 +14,15 @@ function TextWrap(text, options) {
             throw new TypeError("Invalid text input.");
         }
 
+        var skip = options && options.skipCheck,
+            unique = options && options.unique;
+
         if (skip) {
             return header + text + footer;
         }
 
-        // The header is added, if it is either not found,
-        // or when there are non-empty symbols before it;
         var result, th = trim(header), tf = trim(footer);
+
         if (th.length) {
             var headerIdx = text.indexOf(th);
             if (headerIdx < 0) {
@@ -39,8 +38,7 @@ function TextWrap(text, options) {
         } else {
             result = header + text;
         }
-        // The footer is added, if it is either not found,
-        // or when there are non-empty symbols following it;
+
         if (tf.length) {
             var footerIdx = text.lastIndexOf(tf);
             if (footerIdx < 0) {
@@ -107,27 +105,27 @@ function isGap(s) {
     return s === ' ' || s === '\t' || s === '\r' || s === '\n';
 }
 
-var twShared = new TextWrap();
+var twGlobal = new TextWrap();
 
 TextWrap.clear = function () {
-    twShared.clear();
+    twGlobal.clear();
 };
 
 Object.defineProperty(TextWrap, 'header', {
     get: function () {
-        return twShared.header;
+        return twGlobal.header;
     },
     set: function (text) {
-        twShared.header = text;
+        twGlobal.header = text;
     }
 });
 
 Object.defineProperty(TextWrap, 'footer', {
     get: function () {
-        return twShared.footer;
+        return twGlobal.footer;
     },
     set: function (text) {
-        twShared.footer = text;
+        twGlobal.footer = text;
     }
 });
 
