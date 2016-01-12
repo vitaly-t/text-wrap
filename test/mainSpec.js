@@ -1,43 +1,44 @@
 'use strict';
 
-var wrap = require('../');
+var TextWrap = require('../');
+var tw = new TextWrap();
 
 ////////////////////////
 // Positive tests;
 describe("Positive:", function () {
 
     beforeEach(function () {
-        wrap.clear();
+        tw.clear();
     });
 
     describe("with empty header and footer", function () {
         it("must return the text itself", function () {
-            expect(wrap("")).toBe("");
-            expect(wrap("a")).toBe("a");
-            expect(wrap("abc")).toBe("abc");
+            expect(tw.wrap("")).toBe("");
+            expect(tw.wrap("a")).toBe("a");
+            expect(tw.wrap("abc")).toBe("abc");
         });
     });
 
     describe("with a header and a footer", function () {
         it("must return text wrapped up", function () {
-            wrap.header = "h";
-            wrap.footer = "f";
-            expect(wrap("")).toBe("hf");
-            expect(wrap("-")).toBe("h-f");
+            tw.header = "h";
+            tw.footer = "f";
+            expect(tw.wrap("")).toBe("hf");
+            expect(tw.wrap("-")).toBe("h-f");
         });
     });
 
     describe("with a duplicate header", function () {
         it("must skip the header", function () {
-            wrap.header = "h";
-            expect(wrap("h")).toBe("h");
+            tw.header = "h";
+            expect(tw.wrap("h")).toBe("h");
         });
     });
 
     describe("with a duplicate footer", function () {
         it("must skip the footer", function () {
-            wrap.footer = "f";
-            expect(wrap("f")).toBe("f");
+            tw.footer = "f";
+            expect(tw.wrap("f")).toBe("f");
         });
     });
 
@@ -48,13 +49,13 @@ describe("Positive:", function () {
 describe("Negative:", function () {
 
     beforeEach(function () {
-        wrap.clear();
+        tw.clear();
     });
 
     describe("passing in a non-text", function () {
         it("must throw an error", function () {
             expect(function () {
-                wrap();
+                tw.wrap();
             }).toThrow("Invalid text input.");
         });
     });
@@ -62,7 +63,7 @@ describe("Negative:", function () {
     describe("setting a non-string header", function () {
         it("must throw an error", function () {
             expect(function () {
-                wrap.header = 123;
+                tw.header = 123;
             }).toThrow("Invalid header content.");
         });
     });
@@ -70,7 +71,7 @@ describe("Negative:", function () {
     describe("setting a non-string footer", function () {
         it("must throw an error", function () {
             expect(function () {
-                wrap.footer = 123;
+                tw.footer = 123;
             }).toThrow("Invalid footer content.");
         });
     });

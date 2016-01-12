@@ -1,78 +1,86 @@
 'use strict';
 
-var header = '', footer = '';
+function TextWrap() {
 
-function wrap(text, options) {
-
-    if (typeof text !== 'string') {
-        throw new TypeError("Invalid text input.");
+    if (!(this instanceof TextWrap)) {
+        return new TextWrap();
     }
 
-    if (options && options.skipCheck) {
-        return header + text + footer;
-    }
+    var header = '', footer = '';
 
-    // The header is added, if it is either not found,
-    // or when there are non-empty symbols before it;
-    var result, th = trim(header), tf = trim(footer);
-    if (th.length) {
-        var headerIdx = text.indexOf(th);
-        if (headerIdx < 0) {
-            result = header + text;
-        } else {
-            while (--headerIdx >= 0 && isGap(text[headerIdx]));
-            result = headerIdx < 0 ? text : header + text;
+    this.wrap = function (text, options) {
+
+        if (typeof text !== 'string') {
+            throw new TypeError("Invalid text input.");
         }
-    } else {
-        result = header + text;
-    }
-    // The footer is added, if it is either not found,
-    // or when there are non-empty symbols following it;
-    if (tf.length) {
-        var footerIdx = text.lastIndexOf(tf);
-        if (footerIdx < 0) {
-            result += footer;
-        } else {
-            footerIdx += tf.length;
-            while (footerIdx < text.length && isGap(text[footerIdx++]));
-            if (footerIdx < text.length) {
-                result += footer;
+
+        if (options && options.skipCheck) {
+            return header + text + footer;
+        }
+
+        // The header is added, if it is either not found,
+        // or when there are non-empty symbols before it;
+        var result, th = trim(header), tf = trim(footer);
+        if (th.length) {
+            var headerIdx = text.indexOf(th);
+            if (headerIdx < 0) {
+                result = header + text;
+            } else {
+                while (--headerIdx >= 0 && isGap(text[headerIdx]));
+                result = headerIdx < 0 ? text : header + text;
             }
+        } else {
+            result = header + text;
         }
-    } else {
-        result += footer;
-    }
-    return result;
+        // The footer is added, if it is either not found,
+        // or when there are non-empty symbols following it;
+        if (tf.length) {
+            var footerIdx = text.lastIndexOf(tf);
+            if (footerIdx < 0) {
+                result += footer;
+            } else {
+                footerIdx += tf.length;
+                while (footerIdx < text.length && isGap(text[footerIdx++]));
+                if (footerIdx < text.length) {
+                    result += footer;
+                }
+            }
+        } else {
+            result += footer;
+        }
+
+        return result;
+    };
+
+    Object.defineProperty(this, 'header', {
+        get: function () {
+            return header;
+        },
+        set: function (text) {
+            if (typeof text !== 'string') {
+                throw new Error("Invalid header content.");
+            }
+            header = text;
+        }
+    });
+
+    Object.defineProperty(this, 'footer', {
+        get: function () {
+            return footer;
+        },
+        set: function (text) {
+            if (typeof text !== 'string') {
+                throw new Error("Invalid footer content.");
+            }
+            footer = text;
+        }
+    });
+
+    this.clear = function () {
+        header = '';
+        footer = '';
+    };
 }
-
-wrap.clear = function () {
-    header = '';
-    footer = '';
-};
-
-Object.defineProperty(wrap, 'header', {
-    get: function () {
-        return header;
-    },
-    set: function (text) {
-        if (typeof text !== 'string') {
-            throw new Error("Invalid header content.");
-        }
-        header = text;
-    }
-});
-
-Object.defineProperty(wrap, 'footer', {
-    get: function () {
-        return footer;
-    },
-    set: function (text) {
-        if (typeof text !== 'string') {
-            throw new Error("Invalid footer content.");
-        }
-        footer = text;
-    }
-});
 
 function trim(text) {
     if (text.length) {
@@ -90,4 +98,4 @@ function isGap(s) {
     return s === ' ' || s === '\t' || s === '\r' || s === '\n';
 }
 
-module.exports = wrap;
+module.exports = TextWrap;
