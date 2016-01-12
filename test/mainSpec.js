@@ -20,6 +20,8 @@ describe("Positive:", function () {
 
     describe("with a header and a footer", function () {
         it("must return text wrapped up", function () {
+            expect(wrap.header).toBe("");
+            expect(wrap.footer).toBe("");
             wrap.header = "h";
             wrap.footer = "f";
             expect(wrap("")).toBe("hf");
@@ -38,6 +40,31 @@ describe("Positive:", function () {
         it("must skip the footer", function () {
             wrap.footer = "f";
             expect(wrap("f")).toBe("f");
+        });
+    });
+
+    describe("with skipCheck=true", function () {
+        it("must ignore the duplicates", function () {
+            wrap.header = "h";
+            wrap.footer = "f";
+            expect(wrap("hf", {skipCheck: true})).toBe("hhff");
+        });
+    });
+
+    describe("with unique=true", function () {
+        it("must ignore prefixes and suffixes", function () {
+            wrap.header = "h";
+            wrap.footer = "f";
+            expect(wrap("1hf2", {unique: true})).toBe("1hf2");
+        });
+    });
+
+    describe("class instance", function () {
+        var tw = new wrap();
+        it("must work the same", function () {
+            tw.header = tw.header + "h";
+            tw.footer = tw.footer + "f";
+            expect(tw.wrap("hf")).toBe("hf");
         });
     });
 
