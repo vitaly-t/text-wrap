@@ -25,7 +25,35 @@ describe("Positive:", function () {
             wrap.header = "h";
             wrap.footer = "f";
             expect(wrap("")).toBe("hf");
+            expect(wrap(" ")).toBe("h f");
             expect(wrap("-")).toBe("h-f");
+            expect(wrap(" - ")).toBe("h - f");
+        });
+    });
+
+    describe("with a header with gaps", function () {
+        it("must account for the gap", function () {
+            wrap.header = " h";
+            expect(wrap("1")).toBe(" h1");
+            wrap.header = "h ";
+            expect(wrap("1")).toBe("h 1");
+        });
+    });
+
+    describe("with a footer with gaps", function () {
+        it("must account for the gap", function () {
+            wrap.footer = " f";
+            expect(wrap("1")).toBe("1 f");
+            wrap.footer = "f ";
+            expect(wrap("1")).toBe("1f ");
+        });
+    });
+
+    describe("with an header - gap", function () {
+        it("must account for the gap", function () {
+            wrap.header = " ";
+            wrap.footer = " ";
+            expect(wrap("1")).toBe(" 1 ");
         });
     });
 
@@ -48,6 +76,14 @@ describe("Positive:", function () {
             wrap.header = "h";
             wrap.footer = "f";
             expect(wrap("hf", {skipCheck: true})).toBe("hhff");
+        });
+    });
+
+    describe("with unique=false", function () {
+        it("must ignore account for prefixes and suffixes", function () {
+            wrap.header = "h";
+            wrap.footer = "f";
+            expect(wrap("1hf2")).toBe("h1hf2f");
         });
     });
 
