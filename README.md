@@ -30,7 +30,24 @@ $ npm run coverage
 
 ## Usage
 
-UNDER DEVELOPMENT
+As a function, when a single instance is used:
+
+```js
+var wrap = require('text-wrap');
+wrap.header = 'header-';
+wrap.footer = '-footer';
+wrap('body'); //=> header-body-footer
+```
+
+As a class, when multiple instances are needed:
+
+```js
+var TextWrap = require('text-wrap');
+var tw = new TextWrap();
+tw.header = 'header-';
+tw.footer = '-footer';
+tw.wrap('body'); //=> header-body-footer
+```
 
 ## API
 

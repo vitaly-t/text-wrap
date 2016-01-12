@@ -1,9 +1,10 @@
 'use strict';
 
-function TextWrap() {
+function TextWrap(text, options) {
 
     if (!(this instanceof TextWrap)) {
-        return new TextWrap();
+        // called as a function;
+        return twShared.wrap(text, options);
     }
 
     var header = '', footer = '';
@@ -97,5 +98,29 @@ function trim(text) {
 function isGap(s) {
     return s === ' ' || s === '\t' || s === '\r' || s === '\n';
 }
+
+var twShared = new TextWrap();
+
+TextWrap.clear = function () {
+    twShared.clear();
+};
+
+Object.defineProperty(TextWrap, 'header', {
+    get: function () {
+        return twShared.header;
+    },
+    set: function (text) {
+        twShared.header = text;
+    }
+});
+
+Object.defineProperty(TextWrap, 'footer', {
+    get: function () {
+        return twShared.footer;
+    },
+    set: function (text) {
+        twShared.footer = text;
+    }
+});
 
 module.exports = TextWrap;
