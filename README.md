@@ -65,7 +65,7 @@ Disables verification for duplicate header or footer.
 By default, the header is added when it is not found within the `text`, or when there are non-empty symbols that precede it.
 Accordingly, the footer is added when it is not found within the `text`, or when there are non-empty symbols that follow it. 
 
-Enabling this option is effectively switching off most of what this library does, which may yet be required when processing
+Enabling this option is effectively switching off most of what this library does, which may be needed when processing
 files in a bulk requires no verification for certain file types.  
 
 ##### options.unique ⇒ Boolean
