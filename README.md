@@ -92,6 +92,10 @@ Header text to be added, set to an empty string by default.
 
 Footer text to be added, set to an empty string by default.
 
+### wrap.clear()
+
+Resets content for both `header` and `footer` to empty strings.
+
 ## License
 
 Copyright © 2016 [Vitaly Tomilov](https://github.com/vitaly-t);
