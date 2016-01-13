@@ -49,6 +49,8 @@ tw.footer = '-footer';
 tw.wrap('body'); //=> header-body-footer
 ```
 
+See also: [grunt-file-wrap]
+
 ## API
 
 ### wrap(text, [options]) ⇒ String
@@ -102,3 +104,4 @@ Copyright © 2016 [Vitaly Tomilov](https://github.com/vitaly-t);
 Released under the MIT license.
 
 [text-wrap]:https://github.com/vitaly-t/text-wrap
+[grunt-file-wrap]:https://github.com/vitaly-t/grunt-file-wrap
