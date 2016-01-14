@@ -1,7 +1,7 @@
 text-wrap
 =========
 
-Fast and efficient way to wrap your text with a header + footer.
+Fast and safe way to wrap your text with a header + footer.
 
 [![Build Status](https://travis-ci.org/vitaly-t/text-wrap.svg?branch=master)](https://travis-ci.org/vitaly-t/text-wrap)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/text-wrap/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/text-wrap?branch=master)
@@ -82,8 +82,8 @@ Enforces uniqueness of both header and footer within the `text`.
 * `false (default)` - verify for non-empty symbols that precede the header or follow the footer
 * `true` - ignore non-empty symbols, add header + footer only when not found
 
-Enabling this option is to ignore non-empty symbols that precede the header or follow the footer, and add them only
-when they are not found within the `text` at all.
+Enabling this option is to ignore non-empty symbols that precede the header or follow the footer,
+and to add them only when they are not found within the `text` at all.
 
 NOTE: This option has no effect when option `skipCheck` is enabled.
 
